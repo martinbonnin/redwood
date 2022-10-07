@@ -28,9 +28,6 @@ class IosEmojiSearchWidgetFactory: WidgetEmojiSearchWidgetFactory {
     func Column() -> WidgetColumn {
         return ColumnBinding()
     }
-    func ScrollableColumn() -> WidgetScrollableColumn {
-        return ScrollableColumnBinding()
-    }
     func TextInput() -> WidgetTextInput {
         return TextInputBinding()
     }

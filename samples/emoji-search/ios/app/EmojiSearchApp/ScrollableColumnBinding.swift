@@ -17,7 +17,7 @@
 import UIKit
 import shared
 
-class ScrollableColumnBinding: NSObject, WidgetScrollableColumn {
+class ScrollableColumnBinding: NSObject {
     private let root = UITableView()
     private var views: [UIView] = []
 

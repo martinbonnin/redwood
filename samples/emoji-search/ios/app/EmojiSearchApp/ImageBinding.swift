@@ -19,8 +19,8 @@ import shared
 import UIKit
 
 class ImageBinding: WidgetImage {
-    private let root: UIImageView = {
-        let view = UIImageView()
+    private let root: ScaledHeightImageView = {
+        let view = ScaledHeightImageView()
         view.contentMode = .scaleAspectFit
         view.setContentHuggingPriority(.required, for: .horizontal)
         return view
@@ -55,12 +55,8 @@ class ImageBinding: WidgetImage {
 }
 
 class ScaledHeightImageView: UIImageView {
-
-    override var intrinsicContentSize: CGSize {
-        if let myImage = self.image {
-            return CGSize(width: 44, height: 44)
-        }
-        return CGSize(width: -1.0, height: -1.0)
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        CGSize(width: 44, height: 44)
     }
 }
 

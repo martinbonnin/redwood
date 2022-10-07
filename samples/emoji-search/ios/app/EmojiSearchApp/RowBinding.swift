@@ -18,38 +18,129 @@ import UIKit
 import shared
 
 class RowBinding: WidgetRow {
-    let container = Redwood_flex_containerFlexContainer()
-
     func horizontalAlignment(horizontalAlignment_ horizontalAlignment: Int32) {
-        container.alignContent = horizontalAlignment
+        root.container.justifyContent = horizontalAlignment
+        root.invalidate()
     }
 
     func overflow(overflow: Int32) {
-        // ???
+        // What do?
     }
 
     func padding(padding: Redwood_layout_apiPadding) {
-        // container.padding = padding
+        root.container.padding = .init(start: padding.start, end: padding.end, top: padding.top, bottom: padding.bottom)
+        root.invalidate()
     }
 
     func verticalAlignment(verticalAlignment_ verticalAlignment: Int32) {
-        container.alignItems = verticalAlignment
+        root.container.alignItems = verticalAlignment
+        root.invalidate()
     }
 
-    private let root = UIView()
+    private let root = FlexboxRowView(direction: 0)
 
-    init() {
-
-    }
+    init() {}
 
     lazy var children: Redwood_widgetWidgetChildren = ChildrenBinding { [unowned self] views in
-        self.root.subviews.forEach { $0.removeFromSuperview() }
-        views.forEach { self.root.addSubview($0) }
+        root.children = views
     }
+
     var layoutModifiers: Redwood_runtimeLayoutModifier = ExposedKt.layoutModifier()
+
     var value: Any { root }
 }
 
-class FlexboxView: UIView {
-    let 
+private class FlexboxRowView: UIView {
+    let container = Redwood_flex_containerFlexContainer()
+
+    var children: [UIView] = [] {
+        didSet {
+            subviews.forEach { $0.removeFromSuperview() }
+            children.forEach { self.addSubview($0) }
+
+            container.items.removeAllObjects()
+
+            for view in children {
+                let item = Redwood_flex_containerFlexItem(
+                    visible: true,
+                    baseline: -1,
+                    order: 1,
+                    flexGrow: 0,
+                    flexShrink: 1,
+                    flexBasisPercent: -1,
+                    alignSelf: 5,
+                    wrapBefore: false,
+                    margin: .init(start: 0, end: 0, top: 0, bottom: 0),
+                    measurable: Measurable(measureView: view)
+                )
+
+                item.layout = { left, right, top, bottom in
+                    let frame: CGRect = .init(
+                        x: left.intValue,
+                        y: right.intValue,
+                        width: top.intValue - left.intValue,
+                        height: bottom.intValue - right.intValue
+                    )
+
+                    view.frame = frame
+                }
+
+                container.items.add(item)
+            }
+
+            invalidate()
+        }
+    }
+
+    init(direction: Int32) {
+        container.flexDirection = direction
+        super.init(frame: .zero)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func invalidate() {
+        setNeedsLayout()
+        invalidateIntrinsicContentSize()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Need to measure to populate sizes?
+        container.measure(widthSpec: 0, heightSpec: 0)
+        container.layout(
+            left: 200,
+            top: 200,
+            right: 200,
+            bottom: 200
+        )
+    }
+
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        let size = container.measure(widthSpec: Int32(size.width), heightSpec: Int32(size.height))
+        return CGSize(width: Int(size.width), height: Int(size.height))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let size = container.measure(widthSpec: Int32(bounds.width), heightSpec: Int32(bounds.height))
+        return CGSize(width: Int(size.width), height: Int(size.height))
+    }
+}
+
+private class Measurable: Redwood_flex_containerMeasurable {
+    private let view: UIView
+
+    init(measureView: UIView) {
+        self.view = measureView
+    }
+
+    override func measure(widthSpec: Int32, heightSpec: Int32) -> Redwood_flex_containerSize {
+        // What are these specs?
+        let size = CGSize(width: Int(widthSpec), height: Int(heightSpec))
+        let sizeThatFits = view.sizeThatFits(size)
+        return Redwood_flex_containerSize(width: Int32(sizeThatFits.width), height: Int32(sizeThatFits.height))
+    }
 }

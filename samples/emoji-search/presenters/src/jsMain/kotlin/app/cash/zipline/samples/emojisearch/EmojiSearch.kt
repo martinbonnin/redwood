@@ -18,12 +18,15 @@ package app.cash.zipline.samples.emojisearch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import app.cash.redwood.layout.api.CrossAxisAlignment
+import app.cash.redwood.layout.api.MainAxisAlignment
+import app.cash.redwood.layout.api.Padding
 import app.cash.redwood.treehouse.TreehouseUi
 import app.cash.zipline.samples.emojisearch.EmojiSearchEvent.SearchTermEvent
+import example.schema.VerticalAlignmentLayoutModifier
 import example.schema.compose.Column
 import example.schema.compose.Image
 import example.schema.compose.Row
-import example.schema.compose.ScrollableColumn
 import example.schema.compose.Text
 import example.schema.compose.TextInput
 import kotlinx.coroutines.flow.Flow
@@ -38,15 +41,15 @@ class EmojiSearchTreehouseUi(
   override fun Show() {
     val viewModel by viewModels.collectAsState(initialViewModel)
 
-    Column {
+    Column(horizontalAlignment = CrossAxisAlignment.Stretch, verticalAlignment = MainAxisAlignment.Start, padding = Padding(horizontal = 21, vertical = 12)) {
       TextInput(
         text = viewModel.searchTerm,
         hint = "Search",
         onTextChanged = { onEvent(SearchTermEvent(it)) },
       )
-      ScrollableColumn {
+      Column {
         for (image in viewModel.images) {
-          Row {
+          Row(verticalAlignment = CrossAxisAlignment.End) {
             Image(url = image.url)
             Text(text = image.label)
           }
