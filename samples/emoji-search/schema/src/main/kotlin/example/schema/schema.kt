@@ -15,16 +15,24 @@
  */
 package example.schema
 
-import app.cash.redwood.schema.Children
+import app.cash.redwood.layout.Column
+import app.cash.redwood.layout.GrowLayoutModifier
+import app.cash.redwood.layout.HorizontalAlignmentLayoutModifier
+import app.cash.redwood.layout.Row
+import app.cash.redwood.layout.ShrinkLayoutModifier
+import app.cash.redwood.layout.VerticalAlignmentLayoutModifier
 import app.cash.redwood.schema.Property
 import app.cash.redwood.schema.Schema
 import app.cash.redwood.schema.Widget
 
 @Schema(
   [
-    Row::class,
     Column::class,
-    ScrollableColumn::class,
+    Row::class,
+    GrowLayoutModifier::class,
+    ShrinkLayoutModifier::class,
+    HorizontalAlignmentLayoutModifier::class,
+    VerticalAlignmentLayoutModifier::class,
     TextInput::class,
     Text::class,
     Image::class,
@@ -32,20 +40,6 @@ import app.cash.redwood.schema.Widget
 )
 interface EmojiSearch
 
-@Widget(1)
-data class Row(
-  @Children(1) val children: () -> Unit,
-)
-
-@Widget(2)
-data class Column(
-  @Children(1) val children: () -> Unit,
-)
-
-@Widget(3)
-data class ScrollableColumn(
-  @Children(1) val children: () -> Unit,
-)
 
 @Widget(4)
 data class TextInput(

@@ -18,19 +18,38 @@ import UIKit
 import shared
 
 class RowBinding: WidgetRow {
-    private let root: UIStackView = {
-        let view = UIStackView()
-        view.axis = .horizontal
-        view.contentMode = .left
-        return view
-    }()
+    let container = Redwood_flex_containerFlexContainer()
 
-    init() {}
+    func horizontalAlignment(horizontalAlignment_ horizontalAlignment: Int32) {
+        container.alignContent = horizontalAlignment
+    }
+
+    func overflow(overflow: Int32) {
+        // ???
+    }
+
+    func padding(padding: Redwood_layout_apiPadding) {
+        // container.padding = padding
+    }
+
+    func verticalAlignment(verticalAlignment_ verticalAlignment: Int32) {
+        container.alignItems = verticalAlignment
+    }
+
+    private let root = UIView()
+
+    init() {
+
+    }
 
     lazy var children: Redwood_widgetWidgetChildren = ChildrenBinding { [unowned self] views in
         self.root.subviews.forEach { $0.removeFromSuperview() }
-        views.forEach { self.root.addArrangedSubview($0) }
+        views.forEach { self.root.addSubview($0) }
     }
     var layoutModifiers: Redwood_runtimeLayoutModifier = ExposedKt.layoutModifier()
     var value: Any { root }
+}
+
+class FlexboxView: UIView {
+    let 
 }

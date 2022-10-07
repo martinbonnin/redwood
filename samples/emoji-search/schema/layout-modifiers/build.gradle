@@ -1,7 +1,7 @@
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
-apply plugin: 'app.cash.redwood.generator.widget'
+apply plugin: 'app.cash.redwood.generator.layoutmodifiers'
 
-archivesBaseName = 'schema-widget'
+archivesBaseName = 'schema-layout-modifiers'
 
 kotlin {
   iosArm64()
@@ -17,7 +17,6 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation projects.samples.emojiSearch.schema.layoutModifiers
         api projects.redwoodLayoutApi
       }
     }

@@ -45,6 +45,7 @@ include ':samples:emoji-search:presenters'
 include ':samples:emoji-search:schema'
 include ':samples:emoji-search:schema:compose'
 include ':samples:emoji-search:schema:compose:protocol'
+include ':samples:emoji-search:schema:layout-modifiers'
 include ':samples:emoji-search:schema:widget'
 include ':samples:emoji-search:schema:widget:protocol'
 
