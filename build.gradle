@@ -17,6 +17,9 @@ buildscript {
     classpath 'app.cash.redwood:redwood-gradle-plugin'
   }
   repositories {
+    if (System.getProperty("enableMavenLocal", "false").toBoolean()) {
+      mavenLocal()
+    }
     mavenCentral()
     google()
     gradlePluginPortal()
@@ -27,6 +30,9 @@ apply plugin: 'org.jetbrains.dokka'
 
 allprojects {
   repositories {
+    if (System.getProperty("enableMavenLocal", "false").toBoolean()) {
+      mavenLocal()
+    }
     mavenCentral()
     google()
   }
